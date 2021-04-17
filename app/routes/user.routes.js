@@ -20,9 +20,9 @@ module.exports = function(app) {
 
 
   app.post(
-    "/api/contacts/create",
+    "/api/contacts/all",
     [authJwt.verifyToken],
-    controller.createContact
+    controller.getAllContacts
   );
 
 };
