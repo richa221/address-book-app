@@ -1,5 +1,5 @@
 const { authJwt } = require("../middleware");
-const controller = require("../controllers/user.controller");
+const userController = require("../controllers/user.controller");
 
 module.exports = function(app) {
   app.use(function(req, res, next) {
@@ -11,18 +11,8 @@ module.exports = function(app) {
   });
 
   // app.get("/api/contacts/all", controller.allAccess);
-
-  app.get(
-    "/api/contacts/all",
-    [authJwt.verifyToken],
-    controller.getAllContacts
-  );
-
-
-  app.post(
-    "/api/contacts/all",
-    [authJwt.verifyToken],
-    controller.getAllContacts
-  );
+  // [authJwt.verifyToken]
+  app.post("/api/contact",userController.addContact);
+  app.get("/api/contacts",userController.getAllContacts);
 
 };

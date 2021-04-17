@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // database
-const db = require("./app/models");
+const { db } = require("./app/models");
 const Role = db.role;
 
 // db.sequelize.sync();
