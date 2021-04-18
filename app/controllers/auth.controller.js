@@ -1,7 +1,7 @@
 const { db }= require("../models");
 const config = require("../config/auth.config");
 const User = db.user;
-const Role = db.role;
+const {  Validator } = require('node-input-validator');
 
 const Op = db.Sequelize.Op;
 
