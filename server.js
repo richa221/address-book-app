@@ -1,6 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const swaggerUi = require('swagger-ui-express');
+const swaggerJSDoc = require('swagger-jsdoc');
+const { swaggeroptions } = require("./app/config/swagger.config.js");
+const swaggerSpec = swaggerJSDoc(swaggeroptions);
 
 const app = express();
 
@@ -20,16 +24,21 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const { db } = require("./app/models");
 const Role = db.role;
 
-// db.sequelize.sync();
+db.sequelize.sync();
 // force: true will drop the table if it already exists
-db.sequelize.sync({force: true}).then(() => {
-  console.log('Drop and Resync Database with { force: true }');
-});
+// db.sequelize.sync({force: false}).then(() => {
+//   console.log('Drop and Resync Database with { force: true }');
+// });
 
 // simple route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to test node application." });
 });
+app.get('/api/v1/swagger.json', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));    
 
 // routes
 require('./app/routes/auth.routes')(app);

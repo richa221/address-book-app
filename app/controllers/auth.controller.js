@@ -8,7 +8,18 @@ const Op = db.Sequelize.Op;
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
-exports.signup = (req, res) => {
+exports.signup = async (req, res) => {
+  const {email, password} = req.body
+  const data = {email, password};
+  const validate = new Validator(data, {
+    email:"required", 
+    password:"required"
+  });
+
+  let matched = await validate.check();
+  if (!matched) {
+    return res.status(500).json(validate.errors);
+  }
   // Save User to Database
   User.create({    
     email: req.body.email,
@@ -18,7 +29,7 @@ exports.signup = (req, res) => {
       res.send({ message: "User registered successfully!" });
     })
     .catch(err => {
-      res.status(500).send({ message: err.message });
+      res.status(400).send({ message: err.message });
     });
 };
 
@@ -52,7 +63,6 @@ exports.signin = async (req, res) => {
 
       if (!passwordIsValid) {
         return res.status(401).send({
-          accessToken: null,
           message: "Invalid Password!"
         });
       }
@@ -64,7 +74,8 @@ exports.signin = async (req, res) => {
        res.status(200).send({
           id: user.id,          
           email: user.email,          
-          accessToken: token
+          tokenType:"Bearer",
+          accessToken: token,
         });
 
     })

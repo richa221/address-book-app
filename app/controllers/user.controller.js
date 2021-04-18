@@ -4,7 +4,7 @@ const { firebaseDB } = require("../models");
 exports.getAllContacts = (req, res) => {
 	// get firebase contacts
 	var ref = firebaseDB.ref('/');
-	ref.on("value", function(snapshot) {
+	ref.orderByChild("userId").equalTo(req.userId).on("value", function(snapshot) {
 		res.status(200).send({ data:snapshot.val() });
 	  }, function (errorObject) {
 		res.status(400).send({ error:errorObject.code });
@@ -20,12 +20,13 @@ exports.addContact = async (req, res) => {
 		firstName:"required", 
 		lastName:"required", 
 		phoneNumber:"required", 
-		address:"required"
+		address:"required",
 	});
 	let matched = await validate.check();
 	if (!matched) {
 		return res.status(400).json(validate.errors);
 	}
+	data['userId'] = req.userId;
 	firebaseDB.ref(`strv-addressbook-${data.lastName.toLowerCase()}-${data.firstName.toLowerCase()}`).set(data);
-  	res.status(200).send({msg:"User Contact saved successfully."});
+  	res.status(200).send({message:"User Contact saved successfully."});
 };
