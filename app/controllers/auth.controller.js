@@ -22,7 +22,19 @@ exports.signup = (req, res) => {
     });
 };
 
-exports.signin = (req, res) => {
+exports.signin = async (req, res) => {
+  const {email, password} = req.body
+  const data = {email, password};
+  const validate = new Validator(data, {
+    email:"required", 
+    password:"required"
+  });
+
+  let matched = await validate.check();
+  if (!matched) {
+    return res.status(400).json(validate.errors);
+  }
+
   User.findOne({
     where: {
       email: req.body.email
