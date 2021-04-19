@@ -2,7 +2,7 @@ const { chai, server, should } = require("./testConfiguration");
 const UserModel = require("../models/user.model");
 
 /**
- * Test cases to test all the authentication APIs
+ * Test cases to application API's
  * Covered Routes:
  * (1) Login
  * (2) Register
@@ -10,10 +10,9 @@ const UserModel = require("../models/user.model");
 
 describe("Auth", () => {
  	
-
 	// Prepare data for testing
 	const testData = {		
-		"password":"Test@123",
+		"password":"STRV@123",
 		"email":"richatyagi1987@test12345.com"
 	};
 

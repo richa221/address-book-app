@@ -16,19 +16,14 @@ checkDuplicateUsernameOrEmail = async (req, res, next) => {
     return res.status(400).json(validate.errors);
   }
 
-  User.findOne({
-    where: {
-      email: req.body.email
-    }
-  }).then(user => {
-    if (user) {
+  const user = await User.findOne({ where: { email: req.body.email } });
+  if (user) {
       res.status(400).send({
         message: "Failed! Username is already in use!"
       });
       return;
     }
     next();
-  });
 };
 
 

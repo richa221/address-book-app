@@ -39,7 +39,8 @@ exports.signup = async (req, res) => {
   });
   
   if (user) {
-    res.status(200).send({ message: "User registered successfully!" });
+    const responseObject = await createAuthResponse(user, 'User registered successfully!');
+    res.status(200).send(responseObject);
   } else {
     res.status(400).send({ message: "Error! While registering user!" });
   }
@@ -69,6 +70,7 @@ exports.signin = async (req, res) => {
   }
 
   const user = await User.findOne({ where: { email: req.body.email } });
+  
   if (!user) {
     return res.status(400).send({ message: "User Not found." });
   }
@@ -84,15 +86,30 @@ exports.signin = async (req, res) => {
     });
   }
 
-  var token = await jwt.sign({ id: user.id }, config.secret, {
+  const responseObject = await createAuthResponse(user, 'User logged-in successfully!');
+
+  res.status(200).send(responseObject);
+
+};
+
+/**
+ * Method created to manage the common response for login and signup
+ *
+ * @param {Object} user Object of user
+ * @param {string} responseMessage message that will given in response
+ * @return {userId, email, token}
+ */
+async function createAuthResponse(user, responseMessage) {
+  const token = await jwt.sign({ id: user.id }, config.secret, {
     expiresIn: 86400 // 24 hours
   });
 
-  res.status(200).send({
+  return {
     id: user.id,          
     email: user.email,          
     tokenType:"Bearer",
     accessToken: token,
-  });
+    message: responseMessage,
+  };
+}
 
-};
