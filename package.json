@@ -1,7 +1,7 @@
 {
-  "name": "node-js-jwt-auth-postgresql",
+  "name": "User Address Book",
   "version": "1.0.0",
-  "description": "Node.js Demo for JWT Authentication with PostgreSQL",
+  "description": "Application to manage user contacts",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -15,13 +15,13 @@
     "postgresql"
   ],
   "author": "Richa",
-  "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "chai": "^4.3.4",
     "chai-http": "^4.3.0",
     "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "firebase": "^8.4.1",
     "jsonwebtoken": "^8.5.1",

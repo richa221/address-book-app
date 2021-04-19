@@ -1,4 +1,4 @@
-const { chai, server, should, chaiHttp } = require("./testConfiguration");
+const { chai, server, should } = require("./testConfiguration");
 const UserModel = require("../models/user.model");
 
 /**
@@ -35,16 +35,31 @@ describe("Auth", () => {
 	/*
 	* Test the /POST route
 	*/
-	describe("/POST Register", () => {
-		it("It should Register user", (done) => {
-			chai.use(chaiHttp);
+	describe("/POST Login", () => {
+		it("It should send validation error for Login", (done) => {			
 			chai.request(server)
-				.post("/api/auth/signup")
-				.send(testData)
-				.end((err, res) => {					
-					// res.should.have.status(200);					
+				.post("/api/auth/signin")
+				.send({"email": testData.email})
+				.end((err, res) => {
+					res.should.have.status(400);
 					done();
-				}).timeout(20000);
+				});
+		});
+	});
+
+
+	/*
+	* Test the /POST route
+	*/
+	describe("/POST Login", () => {
+		it("It should not send validation error on login", (done) => {			
+			chai.request(server)
+				.post("/api/auth/signin")
+				.send(testData)
+				.end((err, res) => {
+					res.should.have.status(200);
+					done();
+				});
 		});
 	});
 
@@ -52,27 +67,28 @@ describe("Auth", () => {
 	* Test the /POST route
 	*/
 	describe("/POST Login", () => {
-		it("It should send validation error for Login", (done) => {
+		it("it should Send failed user Login", (done) => {			
 			chai.request(server)
-				.post("/api/auth/sigin")
-				.send({"email": testData.email})
+				.post("/api/auth/signin")
+				.send({"email": "admin@admin.com","password": "1234"})
 				.end((err, res) => {
-					res.should.have.status(404);
+					res.should.have.status(400);
 					done();
 				});
 		});
 	});
 
-	
-	// * Test the /POST route
-	
-	describe("/POST Login", () => {
-		it("it should Send failed user Login", (done) => {
+
+	/*
+	* Test the /POST route
+	*/
+	describe("/POST Register", () => {
+		it("it should Register the user successfully", (done) => {			
 			chai.request(server)
-				.post("/api/auth/sigin")
-				.send({"email": "admin@admin.com","password": "1234"})
+				.post("/api/auth/signup")
+				.send({"email": "tssdfsdf@gmail.com","password": "1234"})
 				.end((err, res) => {
-					res.should.have.status(404);
+					res.should.have.status(200);
 					done();
 				});
 		});

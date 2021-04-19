@@ -1,3 +1,4 @@
+// Secret token to sign the Jwt token
 module.exports = {
-  secret: "app-secret-key"
+  secret: process.env.TOKEN_AUTH_SECRET
 };

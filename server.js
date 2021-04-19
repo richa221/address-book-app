@@ -1,3 +1,5 @@
+'use strict'
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -5,6 +7,9 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
 const { swaggeroptions } = require("./app/config/swagger.config.js");
 const swaggerSpec = swaggerJSDoc(swaggeroptions);
+
+// const dotEnv = require('swagger-jsdoc');
+// require('dotenv').config()
 
 const app = express();
 
