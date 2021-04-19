@@ -1,28 +1,20 @@
+const env = process.env;
 module.exports = {
     swaggeroptions :  {
         explore:true,
         swaggerDefinition: {
           openapi: '3.0.0',
           info: {
-            title: 'Address Book API' ,
-            version: "2.0" ,
-            description: "Address Book API",
+            title: env.SWAGGER_TITLE || 'Address Book API' ,
+            version: env.SWAGGER_VERSION || "2.0" ,
+            description: env.SWAGGER_DESCRIPTION || "Address Book API",
             license: 'private',
           },
           servers: [ 
             {
-              url: `http://localhost:8080/{basePath}`,
+              url: `${env.APP_URL || 'http://localhost:8080'}/{basePath}`,
               description: 'Private Integration Service',
               variables: {
-                environment: {
-                  description: 'Select the environment to be utilized for your requests.',
-                  enum: [
-                    'sandbox',
-                    'stage',
-                    'production'
-                  ],
-                  default: 'sandbox' 
-                },
                 basePath:{
                   enum:['api'],
                   default: 'api'
